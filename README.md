@@ -1,2 +1,2 @@
 # NativeHost
-A small framework that makes communication between applications and Google Chrome smoother
+A small framework for the creation of Chrome native hosts
