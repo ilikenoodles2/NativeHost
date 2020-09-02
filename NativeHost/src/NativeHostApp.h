@@ -10,7 +10,6 @@ class NativeHostApp
 public:
 	using OnTickFunc = void(*)(const nlohmann::json&, nlohmann::json&, std::ofstream&);
 
-	NativeHostApp() {}
 	NativeHostApp(OnTickFunc onMsg);
 	~NativeHostApp();
 

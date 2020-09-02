@@ -1,6 +1,6 @@
 #pragma once
 
-#include "NativeHostApp.h"
+#include "../src/NativeHostApp.h"
 
 int main()
 {

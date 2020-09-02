@@ -15,19 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\NativeHostApp.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\NativeHost.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\NativeHostApp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\vendor\json.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <None Include="extension\manifest.json" />
+    <None Include="extension\background.js" />
   </ItemGroup>
 </Project>

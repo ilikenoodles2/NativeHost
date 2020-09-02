@@ -22,7 +22,7 @@ call :LoCase lcFilename
 
 if [%~2]==[-uninstall] (
 	@echo Removing native host from system registry...
-	reg delete "HKCU\Software\Google\Chrome\NativeMessagingHosts\%lcFilename%" /f
+	%SystemRoot%\System32\reg.exe delete "HKCU\Software\Google\Chrome\NativeMessagingHosts\%lcFilename%" /f
 
 	@echo Deleting json for %filename%...
 	del %lcFilename%.json
@@ -32,12 +32,13 @@ if [%~2]==[-uninstall] (
 )
 
 @echo Adding native host to system registry...
-reg add "HKCU\Software\Google\Chrome\NativeMessagingHosts\%lcFilename%" /ve /t REG_SZ /d "%filepath%%lcFilename%.json" /f
+%SystemRoot%\System32\reg.exe add "HKCU\Software\Google\Chrome\NativeMessagingHosts\%lcFilename%" /ve /t REG_SZ /d "%filepath%%lcFilename%.json" /f
 
 ::TODO: Handle special characters, see https://developer.chrome.com/extensions/nativeMessaging
 @echo Creating json for %filename%...
 @echo {> %lcFilename%.json
 @echo "name": "%lcFilename%",>> %lcFilename%.json
+@echo "description": " ",>> %lcFilename%.json
 @echo "path": "%filepath:\=//%%filename%%fileextension%",>> %lcFilename%.json
 @echo "type": "stdio",>> %lcFilename%.json
 @echo "allowed_origins": [>> %lcFilename%.json

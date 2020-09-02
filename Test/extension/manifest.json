@@ -1,0 +1,14 @@
+{
+	"name": "NativeHostTest",
+	"version": "1.0",
+	"description": "Test extension for Native Hosting",
+	"background": {
+		"scripts": [ "background.js" ],
+		"persistent": false
+	},
+	"permissions": [
+		"nativeMessaging"
+	],
+	"browser_action": {},
+	"manifest_version": 2
+}
