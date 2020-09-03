@@ -1,6 +1,6 @@
 #include "NativeHost.h"
 
-void OnMsg(const nlohmann::json& inJSON, nlohmann::json& outJSON, std::ofstream& log)
+void OnMsg(const nlohmann::json& inJSON, nlohmann::json& outJSON)
 {
 }
 

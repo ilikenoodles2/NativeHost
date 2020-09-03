@@ -2,7 +2,7 @@
 
 #include <string>
 #include <iostream>
-#include <string_view>
+#include <thread>
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -30,18 +30,14 @@ NativeHostApp::NativeHostApp(OnTickFunc onMsg)
 
 NativeHostApp::~NativeHostApp()
 {
-	m_Log.close();
 }
 
 void NativeHostApp::Run()
 {
+	std::thread windowProcess(&Window::StartProcess, &m_Window);
+
 	while (ReadMsg())
 		SendMsg();
-}
-
-void NativeHostApp::Log(const char* msg)
-{
-	m_Log << msg;
 }
 
 bool NativeHostApp::ReadMsg()
@@ -65,7 +61,7 @@ bool NativeHostApp::ReadMsg()
 void NativeHostApp::SendMsg()
 {
 	m_OutJSON.clear();
-	m_OnMsg(m_InJSON, m_OutJSON, m_Log);
+	m_OnMsg(m_InJSON, m_OutJSON);
 	std::string str = m_OutJSON.dump();
 
 	// Send 4 bytes of info

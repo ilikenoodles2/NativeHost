@@ -1,22 +1,22 @@
 #pragma once
 
-#include "vendor/json.hpp"
+#include "Window.h"
 
-#include <sstream>
-#include <fstream>
+#include "vendor/json.hpp"
 
 class NativeHostApp
 {
 public:
-	using OnTickFunc = void(*)(const nlohmann::json&, nlohmann::json&, std::ofstream&);
+	using OnTickFunc = void(*)(const nlohmann::json&, nlohmann::json&);
 
 	NativeHostApp(OnTickFunc onMsg);
 	~NativeHostApp();
 
 	void Run();
-	void Log(const char* msg);
+
+	static NativeHostApp& Get() { return *s_Instance; }
 private:
-	std::ofstream m_Log;
+	Window m_Window;
 	nlohmann::json m_InJSON, m_OutJSON;
 	OnTickFunc m_OnMsg;
 

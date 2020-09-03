@@ -7,5 +7,8 @@ int main()
 	NativeHostApp* host = CreateNativeHostApp();
 	host->Run();
 	delete host;
+	
+	s_Logfile.close();
+
 	return 0;
 }

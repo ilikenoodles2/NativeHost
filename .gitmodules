@@ -1,0 +1,3 @@
+[submodule "NativeHost/src/vendor/glfw/glfw"]
+	path = NativeHost/src/vendor/glfw/glfw
+	url = https://github.com/glfw/glfw.git
