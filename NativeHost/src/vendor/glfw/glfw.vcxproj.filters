@@ -23,9 +23,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="glfw\src\glfw_config.h.in" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="glfw\src\context.c">
       <Filter>Source Files</Filter>
     </ClCompile>

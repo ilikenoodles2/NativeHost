@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NativeHost", "NativeHost.vcxproj", "{980E4AA7-FB6D-4D3B-9907-56A42A306A6C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FE7AE144-0444-4814-A6C7-0A68E013D65D} = {FE7AE144-0444-4814-A6C7-0A68E013D65D}
+		{C73A03D1-B66A-4BDC-845B-C691930D129E} = {C73A03D1-B66A-4BDC-845B-C691930D129E}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "..\Test\Test.vcxproj", "{CAE2DA9A-1B32-4CC8-8288-FE3DD90CB84C}"
@@ -14,6 +15,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "..\Test\Test.vcxpro
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glfw", "src\vendor\glfw\glfw.vcxproj", "{FE7AE144-0444-4814-A6C7-0A68E013D65D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glad", "src\vendor\glad\glad.vcxproj", "{C73A03D1-B66A-4BDC-845B-C691930D129E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +50,14 @@ Global
 		{FE7AE144-0444-4814-A6C7-0A68E013D65D}.Release|x64.Build.0 = Release|x64
 		{FE7AE144-0444-4814-A6C7-0A68E013D65D}.Release|x86.ActiveCfg = Release|Win32
 		{FE7AE144-0444-4814-A6C7-0A68E013D65D}.Release|x86.Build.0 = Release|Win32
+		{C73A03D1-B66A-4BDC-845B-C691930D129E}.Debug|x64.ActiveCfg = Debug|x64
+		{C73A03D1-B66A-4BDC-845B-C691930D129E}.Debug|x64.Build.0 = Debug|x64
+		{C73A03D1-B66A-4BDC-845B-C691930D129E}.Debug|x86.ActiveCfg = Debug|Win32
+		{C73A03D1-B66A-4BDC-845B-C691930D129E}.Debug|x86.Build.0 = Debug|Win32
+		{C73A03D1-B66A-4BDC-845B-C691930D129E}.Release|x64.ActiveCfg = Release|x64
+		{C73A03D1-B66A-4BDC-845B-C691930D129E}.Release|x64.Build.0 = Release|x64
+		{C73A03D1-B66A-4BDC-845B-C691930D129E}.Release|x86.ActiveCfg = Release|Win32
+		{C73A03D1-B66A-4BDC-845B-C691930D129E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

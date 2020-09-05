@@ -2,7 +2,6 @@
 
 #include <string>
 #include <iostream>
-#include <thread>
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -12,8 +11,8 @@
 
 NativeHostApp* NativeHostApp::s_Instance = nullptr;
 
-NativeHostApp::NativeHostApp(OnTickFunc onMsg)
-	: m_OnMsg(onMsg)
+NativeHostApp::NativeHostApp(Window::OnUpdate onUpdate, OnTickFunc onMsg)
+	: m_Window(onUpdate), m_OnMsg(onMsg)
 {
 	if (s_Instance) throw std::exception("Native Host already exists");
 	s_Instance = this;
@@ -26,15 +25,23 @@ NativeHostApp::NativeHostApp(OnTickFunc onMsg)
 		throw std::exception("Failed to switch to binary mode");
 	}
 #endif
+
+	bool windowInitialized = false;
+	m_WindowProcess = std::thread([&]() {m_Window.StartProcess(m_Running, windowInitialized); });
+	while (!windowInitialized) {}
+
+	m_Window.SetContext(true);
 }
 
 NativeHostApp::~NativeHostApp()
 {
+	s_Logfile << "NativeHostApp destructor" << std::endl;
 }
 
 void NativeHostApp::Run()
 {
-	std::thread windowProcess(&Window::StartProcess, &m_Window);
+	m_Window.SetContext(false);
+	m_Running = true;
 
 	while (ReadMsg())
 		SendMsg();

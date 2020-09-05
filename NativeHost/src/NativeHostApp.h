@@ -4,19 +4,24 @@
 
 #include "vendor/json.hpp"
 
+#include <thread>
+
 class NativeHostApp
 {
 public:
 	using OnTickFunc = void(*)(const nlohmann::json&, nlohmann::json&);
 
-	NativeHostApp(OnTickFunc onMsg);
+	NativeHostApp(Window::OnUpdate onUpdate, OnTickFunc onMsg);
 	~NativeHostApp();
 
 	void Run();
 
 	static NativeHostApp& Get() { return *s_Instance; }
 private:
+	bool m_Running = false;
 	Window m_Window;
+	std::thread m_WindowProcess;
+
 	nlohmann::json m_InJSON, m_OutJSON;
 	OnTickFunc m_OnMsg;
 

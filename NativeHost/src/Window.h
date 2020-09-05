@@ -11,13 +11,18 @@ static std::ofstream s_Logfile = std::ofstream("NativeLog.txt");
 class Window 
 {
 public:
-	Window();
+	using OnUpdate = void(*)(const float);
+
+	Window(OnUpdate onUpdate);
 	~Window();
 
-	void StartProcess();
+	void Init();
+	void StartProcess(const bool& appReady, bool& windowInitialized);
+	void Close() { m_IsOpen = false; }
 
-	GLFWwindow* Get() { return m_Window; }
+	void SetContext(bool thisThread);
 private:
 	GLFWwindow* m_Window;
 	bool m_IsOpen;
+	OnUpdate m_OnUpdate;
 };
