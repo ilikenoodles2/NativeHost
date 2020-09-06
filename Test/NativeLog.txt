@@ -1,4 +1,3 @@
 Successfully created window
 Successfully initialized glad
 Terminated glfw
-Error: 65537The GLFW library is not initialized

@@ -22,21 +22,17 @@ static void ErrorCallback(int error, const char* description)
 static void WindowResizeCallback(GLFWwindow* window, int width, int height)
 {
 	Window* windowPtr = (Window*)glfwGetWindowUserPointer(window);
-	windowPtr->GetLogger().Resize(width, height);
+	windowPtr->GetLogger()->Resize(width, height);
 }
 
 static void WindowCloseCallback(GLFWwindow* window)
 {
 	Window* windowPtr = (Window*)glfwGetWindowUserPointer(window);
-	glfwDestroyWindow(window);
-	glfwTerminate();
-	s_Logfile << "Terminated glfw" << std::endl;
-
-	windowPtr->Close();
+	windowPtr->~Window();
 }
 
 Window::Window(OnUpdate onUpdate)
-	: m_IsOpen(false), m_OnUpdate(onUpdate)
+	: m_IsOpen(false), m_OnUpdate(onUpdate), m_Logger(nullptr)
 {
 	// All initialization done in StartProcess(), because window
 	// runs on a separate thread than the native host
@@ -44,8 +40,7 @@ Window::Window(OnUpdate onUpdate)
 
 Window::~Window()
 {
-	if (m_IsOpen)
-		WindowCloseCallback(m_Window);
+	m_IsOpen = false;
 }
 
 void Window::StartProcess(const bool& appReady, bool& windowInitialized)
@@ -81,13 +76,16 @@ void Window::StartProcess(const bool& appReady, bool& windowInitialized)
 	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
 	s_Logfile << "Successfully initialized glad" << std::endl;
 
+	Logger logger;
+	m_Logger = &logger;
+	m_Logger->Init(m_Window);
+
 	SetContext(false);
 
 	windowInitialized = true;
 	while(!appReady) {}
 
 	SetContext(true);
-	m_Logger.Init(m_Window);
 	static float lastFrameTime = (float)glfwGetTime();
 
 	while (m_IsOpen)
@@ -99,11 +97,17 @@ void Window::StartProcess(const bool& appReady, bool& windowInitialized)
 		lastFrameTime = time;
 
 		m_OnUpdate(timestep);
-		m_Logger.Update(timestep);
+		m_Logger->Update(timestep);
 
 		glfwPollEvents();
 		glfwSwapBuffers(m_Window);
 	}
+
+	m_Logger->Shutdown();
+
+	glfwDestroyWindow(m_Window);
+	glfwTerminate();
+	s_Logfile << "Terminated glfw" << std::endl;
 }
 
 void Window::SetContext(bool thisThread)

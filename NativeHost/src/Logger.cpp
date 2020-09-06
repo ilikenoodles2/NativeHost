@@ -4,13 +4,6 @@
 #include "vendor/imgui/imgui/examples/imgui_impl_glfw.h"
 #include "vendor/imgui/imgui/examples/imgui_impl_opengl3.h"
 
-Logger::~Logger()
-{
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
-}
-
 void Logger::Init(void* window)
 {
 	ImGui::CreateContext();
@@ -29,7 +22,25 @@ void Logger::Update(const float timestep)
 	ImGuiIO& io = ImGui::GetIO();
 	ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f));
 	ImGui::SetNextWindowSize(io.DisplaySize);
-	ImGui::Begin("Logger", 0, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize);
+	ImGui::Begin("Logger", 0, ImGuiWindowFlags_NoResize);
+	{
+		std::lock_guard<std::mutex> l(m_Mutex);
+		if (ImGui::Button("Clear"))
+			m_Buffer.clear();
+
+		ImGui::BeginChild("ScrollRegion", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
+		{
+			for (const std::string& msg : m_Buffer)
+				ImGui::TextUnformatted(msg.c_str());
+
+			if (m_ShouldScrollToBottom)
+			{
+				ImGui::SetScrollY(ImGui::GetScrollMaxY());
+				m_ShouldScrollToBottom = false;
+			}
+		}
+		ImGui::EndChild();
+	}
 	ImGui::End();
 
 	ImGui::Render();
@@ -40,4 +51,11 @@ void Logger::Resize(int width, int height)
 {
 	ImGuiIO& io = ImGui::GetIO();
 	io.DisplaySize = ImVec2((float)width, (float)height);
+}
+
+void Logger::Shutdown()
+{
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 }

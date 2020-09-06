@@ -22,11 +22,11 @@ public:
 	void Close() { m_IsOpen = false; }
 
 	void SetContext(bool thisThread);
-	Logger& GetLogger() { return m_Logger; }
+	Logger* GetLogger() { return m_Logger; }
 private:
 	GLFWwindow* m_Window;
 	bool m_IsOpen;
 	OnUpdate m_OnUpdate;
 
-	Logger m_Logger;
+	Logger* m_Logger;
 };

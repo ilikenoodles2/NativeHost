@@ -35,6 +35,8 @@ NativeHostApp::NativeHostApp(Window::OnUpdate onUpdate, OnTickFunc onMsg)
 
 NativeHostApp::~NativeHostApp()
 {
+	m_Window.~Window();
+	m_WindowProcess.join();
 }
 
 void NativeHostApp::Run()
@@ -60,6 +62,8 @@ bool NativeHostApp::ReadMsg()
 	std::cin.read(buffer.data(), msgLen);
 	std::cin.clear();
 	m_InJSON = nlohmann::json::parse(buffer);
+
+	m_Window.GetLogger()->Log("Received: ", buffer);
 
 	return true;
 }
