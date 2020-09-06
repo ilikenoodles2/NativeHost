@@ -35,7 +35,6 @@ NativeHostApp::NativeHostApp(Window::OnUpdate onUpdate, OnTickFunc onMsg)
 
 NativeHostApp::~NativeHostApp()
 {
-	s_Logfile << "NativeHostApp destructor" << std::endl;
 }
 
 void NativeHostApp::Run()

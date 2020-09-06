@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Logger.h"
+
 #include "vendor/glfw/glfw/include/GLFW/glfw3.h"
 
 #include <fstream>
@@ -16,13 +18,15 @@ public:
 	Window(OnUpdate onUpdate);
 	~Window();
 
-	void Init();
 	void StartProcess(const bool& appReady, bool& windowInitialized);
 	void Close() { m_IsOpen = false; }
 
 	void SetContext(bool thisThread);
+	Logger& GetLogger() { return m_Logger; }
 private:
 	GLFWwindow* m_Window;
 	bool m_IsOpen;
 	OnUpdate m_OnUpdate;
+
+	Logger m_Logger;
 };

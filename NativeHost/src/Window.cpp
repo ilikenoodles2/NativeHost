@@ -19,6 +19,12 @@ static void ErrorCallback(int error, const char* description)
 	s_Logfile << "Error: " << error << description << std::endl;
 }
 
+static void WindowResizeCallback(GLFWwindow* window, int width, int height)
+{
+	Window* windowPtr = (Window*)glfwGetWindowUserPointer(window);
+	windowPtr->GetLogger().Resize(width, height);
+}
+
 static void WindowCloseCallback(GLFWwindow* window)
 {
 	Window* windowPtr = (Window*)glfwGetWindowUserPointer(window);
@@ -42,10 +48,6 @@ Window::~Window()
 		WindowCloseCallback(m_Window);
 }
 
-void Window::Init()
-{
-}
-
 void Window::StartProcess(const bool& appReady, bool& windowInitialized)
 {
 	glfwSetErrorCallback(ErrorCallback);
@@ -63,6 +65,7 @@ void Window::StartProcess(const bool& appReady, bool& windowInitialized)
 
 	glfwSetWindowUserPointer(m_Window, this);
 	glfwSetWindowCloseCallback(m_Window, WindowCloseCallback);
+	glfwSetWindowSizeCallback(m_Window, WindowResizeCallback);
 	m_IsOpen = true;
 	s_Logfile << "Successfully created window" << std::endl;
 
@@ -84,6 +87,7 @@ void Window::StartProcess(const bool& appReady, bool& windowInitialized)
 	while(!appReady) {}
 
 	SetContext(true);
+	m_Logger.Init(m_Window);
 	static float lastFrameTime = (float)glfwGetTime();
 
 	while (m_IsOpen)
@@ -91,8 +95,11 @@ void Window::StartProcess(const bool& appReady, bool& windowInitialized)
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		float time = (float)glfwGetTime();
-		m_OnUpdate(time - lastFrameTime);
+		float timestep = time - lastFrameTime;
 		lastFrameTime = time;
+
+		m_OnUpdate(timestep);
+		m_Logger.Update(timestep);
 
 		glfwPollEvents();
 		glfwSwapBuffers(m_Window);
