@@ -30,8 +30,8 @@ void Logger::Update(const float timestep)
 
 		ImGui::BeginChild("ScrollRegion", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
 		{
-			for (const std::string& msg : m_Buffer)
-				ImGui::TextUnformatted(msg.c_str());
+			for (const auto& msg : m_Buffer)
+				ImGui::Text(msg.first.c_str(), msg.second);
 
 			if (m_ShouldScrollToBottom)
 			{
