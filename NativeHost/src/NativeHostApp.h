@@ -17,6 +17,7 @@ public:
 	void Run();
 
 	static NativeHostApp& Get() { return *s_Instance; }
+	Logger* GetLogger() { return m_Window.GetLogger(); }
 private:
 	bool m_Running = false;
 	Window m_Window;

@@ -2,12 +2,13 @@
 
 #include "../src/vendor/glad/include/glad/glad.h"
 #include "../src/NativeHostApp.h"
+#include "../src/FunctionBinds.h"
 
 int main()
 {
-	NativeHostApp* host = CreateNativeHostApp();
-	host->Run();
-	delete host;
+	NativeHostApp* app = CreateNativeHostApp();
+	app->Run();
+	delete app;
 	
 	s_Logfile.close();
 

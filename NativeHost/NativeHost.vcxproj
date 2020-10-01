@@ -180,6 +180,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\NativeHost.h" />
+    <ClInclude Include="src\FunctionBinds.h" />
     <ClInclude Include="src\Logger.h" />
     <ClInclude Include="src\NativeHostApp.h" />
     <ClInclude Include="src\vendor\json.hpp" />

@@ -60,10 +60,9 @@ bool NativeHostApp::ReadMsg()
 	// read message
 	buffer.resize(msgLen);
 	std::cin.read(buffer.data(), msgLen);
-	std::cin.clear();
 	m_InJSON = nlohmann::json::parse(buffer);
 
-	m_Window.GetLogger()->Log("Received: ", buffer);
+	GetLogger()->Log("Received: ", m_InJSON);
 
 	return true;
 }
@@ -77,6 +76,8 @@ void NativeHostApp::SendMsg()
 	// Send 4 bytes of info
 	uint32_t msgLen = str.size();
 	std::cout.write(reinterpret_cast<char*>(&msgLen), 4);
+
+	GetLogger()->Log("Sending: ", str);
 
 	// Output message to chrome
 	std::cout.write(str.c_str(), msgLen);

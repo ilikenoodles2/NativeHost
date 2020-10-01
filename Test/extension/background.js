@@ -1,5 +1,3 @@
-// connects to the native messaging app
-//
 var s_NativePort = null;
 
 function ConnectNative() {
@@ -12,11 +10,11 @@ function ConnectNative() {
     }
 }
 
-function SendNativeMessage(msg) {
+function CallFunction(args) {
     if (!s_NativePort) return;
 
-    s_NativePort.postMessage(msg);
-    console.log("Sending: " + JSON.stringify(msg));
+    console.log("Sending: ", args);
+    s_NativePort.postMessage(args);
 }
 
 function DisconnectNative() {
@@ -27,8 +25,8 @@ function DisconnectNative() {
     console.log("Host disconnected");
 }
 
-function OnNativeMessage(message) {
-    console.log("Received: " + message);
+function OnNativeMessage(retVal) {
+    console.log("Recieved: ", retVal);
 }
 
 function OnNativeDisconnect() {
@@ -38,3 +36,6 @@ function OnNativeDisconnect() {
 }
 
 ConnectNative();
+CallFunction(["Add", 1, 2]);
+CallFunction(["Sub", 2, 3]);
+CallFunction(["Add", 3, 4]);
