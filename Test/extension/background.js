@@ -1,4 +1,5 @@
 var s_NativePort = null;
+var s_ReceivedMessage = true; // Used to synchronize Native Host and Chrome
 
 function ConnectNative() {
     s_NativePort = chrome.runtime.connectNative("test");
@@ -11,10 +12,14 @@ function ConnectNative() {
 }
 
 function CallFunction(args) {
-    if (!s_NativePort) return;
-
-    console.log("Sending: ", args);
-    s_NativePort.postMessage(args);
+    if (!s_ReceivedMessage) {
+        setTimeout(() => { CallFunction(args); }, 0);
+    }
+    else if (s_NativePort) {
+        console.log("Sending: ", args);
+        s_NativePort.postMessage(args);
+        s_ReceivedMessage = false;
+    }
 }
 
 function DisconnectNative() {
@@ -26,6 +31,7 @@ function DisconnectNative() {
 }
 
 function OnNativeMessage(retVal) {
+    s_ReceivedMessage = true;
     console.log("Recieved: ", retVal);
 }
 

@@ -73,12 +73,9 @@ void NativeHostApp::SendMsg()
 	m_OnMsg(m_InJSON, m_OutJSON);
 	std::string str = m_OutJSON.dump();
 
-	// Send 4 bytes of info
 	uint32_t msgLen = str.size();
-	std::cout.write(reinterpret_cast<char*>(&msgLen), 4);
+	std::cout.write(reinterpret_cast<char*>(&msgLen), 4); // 4 bytes of info
+	std::cout.write(str.c_str(), msgLen); // message
 
 	GetLogger()->Log("Sending: ", str);
-
-	// Output message to chrome
-	std::cout.write(str.c_str(), msgLen);
 }
