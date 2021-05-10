@@ -1,6 +1,7 @@
 #include "Window.h"
 
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 void OpenGLMessageCallback(
 	unsigned source,
@@ -58,9 +59,9 @@ void Window::StartProcess(const bool& appReady, bool& windowInitialized)
 		return;
 	}
 
-	glfwSetWindowUserPointer(m_Window, this);
-	glfwSetWindowCloseCallback(m_Window, WindowCloseCallback);
-	glfwSetWindowSizeCallback(m_Window, WindowResizeCallback);
+	glfwSetWindowUserPointer(static_cast<GLFWwindow*>(m_Window), this);
+	glfwSetWindowCloseCallback(static_cast<GLFWwindow*>(m_Window), WindowCloseCallback);
+	glfwSetWindowSizeCallback(static_cast<GLFWwindow*>(m_Window), WindowResizeCallback);
 	m_IsOpen = true;
 	s_Logfile << "Successfully created window" << std::endl;
 
@@ -100,17 +101,17 @@ void Window::StartProcess(const bool& appReady, bool& windowInitialized)
 		m_Logger->Update(timestep);
 
 		glfwPollEvents();
-		glfwSwapBuffers(m_Window);
+		glfwSwapBuffers(static_cast<GLFWwindow*>(m_Window));
 	}
 
 	m_Logger->Shutdown();
 
-	glfwDestroyWindow(m_Window);
+	glfwDestroyWindow(static_cast<GLFWwindow*>(m_Window));
 	glfwTerminate();
 	s_Logfile << "Terminated glfw" << std::endl;
 }
 
 void Window::SetContext(bool thisThread)
 {
-	glfwMakeContextCurrent(thisThread ? m_Window : NULL);
+	glfwMakeContextCurrent(thisThread ? static_cast<GLFWwindow*>(m_Window) : NULL);
 }

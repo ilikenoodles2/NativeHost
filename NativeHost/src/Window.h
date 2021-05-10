@@ -2,8 +2,6 @@
 
 #include "Logger.h"
 
-#include "vendor/glfw/glfw/include/GLFW/glfw3.h"
-
 #include <fstream>
 
 // Used to log everything into a file, because we are 
@@ -24,7 +22,7 @@ public:
 	void SetContext(bool thisThread);
 	Logger* GetLogger() { return m_Logger; }
 private:
-	GLFWwindow* m_Window;
+	void* m_Window;
 	bool m_IsOpen;
 	OnUpdate m_OnUpdate;
 
