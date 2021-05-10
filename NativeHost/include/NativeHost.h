@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../src/vendor/glad/include/glad/glad.h"
 #include "../src/NativeHostApp.h"
 #include "../src/FunctionBinds.h"
 

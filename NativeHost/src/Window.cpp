@@ -1,6 +1,6 @@
 #include "Window.h"
 
-#include "vendor/glad/include/glad/glad.h"
+#include <glad/glad.h>
 
 void OpenGLMessageCallback(
 	unsigned source,

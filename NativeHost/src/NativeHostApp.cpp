@@ -60,8 +60,10 @@ bool NativeHostApp::ReadMsg()
 	// read message
 	buffer.resize(msgLen);
 	std::cin.read(buffer.data(), msgLen);
-	m_InJSON = nlohmann::json::parse(buffer);
 
+	// This is used instead of nlohmann::json:::parse(buffer);
+	// to avoid redundant copy
+	nlohmann::detail::parser<nlohmann::json>(nlohmann::detail::input_adapter(buffer), nullptr, true).parse(true, m_InJSON);
 	GetLogger()->Log("Received: ", m_InJSON);
 
 	return true;
