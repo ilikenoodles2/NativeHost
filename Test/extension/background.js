@@ -43,5 +43,5 @@ function OnNativeDisconnect() {
 
 ConnectNative();
 CallFunction(["Add", 1, 2]);
-CallFunction(["Add2", 2]);
-CallFunction(["Add", 3, 4]);
+CallFunction(["SequentialArray", 0]);
+CallFunction(["Log", "Hello World"]);

@@ -73,6 +73,7 @@ void NativeHostApp::SendMsg()
 {
 	m_OutJSON.clear();
 	m_OnMsg(m_InJSON, m_OutJSON);
+	if (m_OutJSON.empty()) return;
 	std::string str = m_OutJSON.dump();
 
 	uint32_t msgLen = str.size();

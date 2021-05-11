@@ -8,9 +8,14 @@ struct Test
 	}
 };
 
-int Add2(int a)
+std::array<int, 4> SequentialArray(int a)
 {
-	return a + 2;
+	return { a, a + 1, a + 2, a + 3 };
+}
+
+void Log(const std::string& msg)
+{
+	NativeHostApp::Get().GetLogger()->Log(msg);
 }
 
 // OnUpdate is called within the window rendering loop
@@ -37,7 +42,8 @@ NativeHostApp* CreateNativeHostApp()
 	// Lambdas are not supported
 	Test obj;
 	FunctionBinds::Bind<&Test::Add>("Add", obj);
-	FunctionBinds::Bind<&Add2>("Add2");
+	FunctionBinds::Bind<&SequentialArray>("SequentialArray");
+	FunctionBinds::Bind<&Log>("Log");
 
 	return new NativeHostApp(OnUpdate, OnMsg);
 }

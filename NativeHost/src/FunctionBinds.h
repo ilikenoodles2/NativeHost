@@ -12,23 +12,24 @@ struct FunctionTraits
 {
 };
 
-template<typename ClassType, typename ReturnType, typename... Args>
-struct FunctionTraits<ReturnType(ClassType::*)(Args...) const>
-    : FunctionTraits<ReturnType(*)(Args...)>
+template<typename ClassType, typename ReturnT, typename... Args>
+struct FunctionTraits<ReturnT(ClassType::*)(Args...) const>
+    : FunctionTraits<ReturnT(*)(Args...)>
 {
 };
 
-template<typename ClassType, typename ReturnType, typename... Args>
-struct FunctionTraits<ReturnType(ClassType::*)(Args...)>
-    : FunctionTraits<ReturnType(*)(Args...)>
+template<typename ClassType, typename ReturnT, typename... Args>
+struct FunctionTraits<ReturnT(ClassType::*)(Args...)>
+    : FunctionTraits<ReturnT(*)(Args...)>
 {
 };
 
-template<typename ReturnType, typename... Args>
-struct FunctionTraits<ReturnType(*)(Args...)>
+template<typename ReturnT, typename... Args>
+struct FunctionTraits<ReturnT(*)(Args...)>
 {
     static constexpr int ArgCount = sizeof...(Args);
     using ArgTuple = std::tuple<Args...>;
+    using ReturnType = ReturnT;
 };
 
 class Adapter
@@ -91,7 +92,10 @@ private:
         using Traits = FunctionTraits<decltype(func)>;
         auto lambda = [](const nlohmann::json& in, nlohmann::json& out) 
         {
-            out = func(static_cast<std::tuple_element_t<Indices, Traits::ArgTuple>>(in[Indices + 1])...);
+            if constexpr(std::is_same_v<Traits::ReturnType, void>)
+                func(static_cast<std::tuple_element_t<Indices, Traits::ArgTuple>>(in[Indices + 1])...);
+            else
+                out = func(static_cast<std::tuple_element_t<Indices, Traits::ArgTuple>>(in[Indices + 1])...);
         };
 
         s_Binds.emplace(name, lambda);
@@ -105,7 +109,10 @@ private:
         T* objPtr = &obj;
         auto lambda = [objPtr](const nlohmann::json& in, nlohmann::json& out)
         {
-            out = (objPtr->*method)(static_cast<std::tuple_element_t<Indices, Traits::ArgTuple>>(in[Indices + 1])...);
+            if constexpr (std::is_same_v<Traits::ReturnType, void>)
+                (objPtr->*method)(static_cast<std::tuple_element_t<Indices, Traits::ArgTuple>>(in[Indices + 1])...);
+            else
+                out = (objPtr->*method)(static_cast<std::tuple_element_t<Indices, Traits::ArgTuple>>(in[Indices + 1])...);
         };
 
         s_Binds.emplace(name, lambda);
