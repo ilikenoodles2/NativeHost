@@ -64,7 +64,7 @@ bool NativeHostApp::ReadMsg()
 	// This is used instead of nlohmann::json:::parse(buffer);
 	// to avoid redundant copy
 	nlohmann::detail::parser<nlohmann::json>(nlohmann::detail::input_adapter(buffer), nullptr, true).parse(true, m_InJSON);
-	GetLogger()->Log("Received: ", m_InJSON);
+	GetLogger()->HostLog("Received: ", m_InJSON);
 
 	return true;
 }
@@ -80,5 +80,5 @@ void NativeHostApp::SendMsg()
 	std::cout.write(reinterpret_cast<char*>(&msgLen), 4); // 4 bytes of info
 	std::cout.write(str.c_str(), msgLen); // message
 
-	GetLogger()->Log("Sending: ", str);
+	GetLogger()->HostLog("Sending: ", str);
 }

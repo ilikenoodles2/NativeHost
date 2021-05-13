@@ -7,7 +7,7 @@
 void Logger::Init(void* window)
 {
 	ImGui::CreateContext();
-	ImGui::StyleColorsLight();
+	ImGui::StyleColorsDark();
 
 	ImGui_ImplGlfw_InitForOpenGL((GLFWwindow*)window, true);
 	ImGui_ImplOpenGL3_Init("#version 410");
@@ -28,10 +28,16 @@ void Logger::Update(const float timestep)
 		if (ImGui::Button("Clear"))
 			m_Buffer.clear();
 
+		static bool enableHostLogs;
+		ImGui::Checkbox("EnableHostLogs", &enableHostLogs);
+
 		ImGui::BeginChild("ScrollRegion", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
 		{
 			for (const auto& msg : m_Buffer)
-				ImGui::Text(msg.first.c_str(), msg.second);
+			{
+				if(!(msg.second & 0x80000000) || enableHostLogs)
+					ImGui::Text(msg.first.c_str(), msg.second);
+			}
 
 			if (m_ShouldScrollToBottom)
 			{
