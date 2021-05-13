@@ -28,14 +28,18 @@ void Logger::Update(const float timestep)
 		if (ImGui::Button("Clear"))
 			m_Buffer.clear();
 
-		static bool enableHostLogs;
-		ImGui::Checkbox("EnableHostLogs", &enableHostLogs);
+		static bool enableHostLogs, enableUserLogs;
+		ImGui::SameLine();
+		ImGui::Checkbox("HostLogs", &enableHostLogs);
+		ImGui::SameLine();
+		ImGui::Checkbox("UserLogs", &enableUserLogs);
 
 		ImGui::BeginChild("ScrollRegion", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
 		{
 			for (const auto& msg : m_Buffer)
 			{
-				if(!(msg.second & 0x80000000) || enableHostLogs)
+				if(((msg.second & 0x80000000) && enableHostLogs)
+					|| (!(msg.second & 0x80000000) && enableUserLogs))
 					ImGui::Text(msg.first.c_str(), msg.second);
 			}
 
