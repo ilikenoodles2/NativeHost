@@ -1,7 +1,7 @@
 #pragma once
 
 #include <mutex>
-#include <deque>
+#include <vector>
 #include <sstream>
 
 class Logger
@@ -27,7 +27,7 @@ private:
 	
 	// If msb is 1, message is from the host,
 	// if msb is 0, message is from the user
-	std::deque<std::pair<std::string, uint32_t>> m_Buffer;
+	std::vector<std::pair<std::string, uint32_t>> m_Buffer;
 	int m_MsgCount = 0, m_HostMsgCount = 0;
 
 	bool m_ShouldScrollToBottom = true;
@@ -46,7 +46,7 @@ private:
 		}
 
 		auto& prevMsg = m_Buffer.back();
-		if ((prevMsg.second & RepeatMask) == 0 && prevMsg.first == str.str())
+		if ((prevMsg.second & RepeatMask) == 0 && (prevMsg.first == str.str()))
 		{
 			if ((prevMsg.second & OriginMask) == origin)
 			{
@@ -57,7 +57,7 @@ private:
 		}
 		else if (prevMsg.first.compare(0, prevMsg.first.size() - 4, str.str()) == 0)
 		{
-			if ((prevMsg.second & OriginMask == origin)
+			if (((prevMsg.second & OriginMask) == origin)
 				&& (prevMsg.second & RepeatMask) != MaxLogRepeat)
 			{
 				prevMsg.second++;
@@ -73,7 +73,9 @@ private:
 				if ((it->second & OriginMask) == origin)
 				{
 					m_Buffer.erase(it);
-					break;
+					m_Buffer.emplace_back(str.str(), origin);
+					m_ShouldScrollToBottom = true;
+					return;
 				}
 			}
 		}

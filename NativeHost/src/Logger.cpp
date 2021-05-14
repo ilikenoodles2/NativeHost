@@ -38,8 +38,8 @@ void Logger::Update(const float timestep)
 		{
 			for (const auto& msg : m_Buffer)
 			{
-				if(((msg.second & 0x80000000) && enableHostLogs)
-					|| (!(msg.second & 0x80000000) && enableUserLogs))
+				if(((msg.second & OriginMask) && enableHostLogs)
+					|| (!(msg.second & OriginMask) && enableUserLogs))
 					ImGui::Text(msg.first.c_str(), msg.second);
 			}
 
