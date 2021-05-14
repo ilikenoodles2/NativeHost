@@ -65,8 +65,8 @@ private:
 			}
 		}
 
-		if ((origin == 0 && m_MsgCount == s_MsgCapacity)
-			|| (origin == OriginMask && m_HostMsgCount == s_HostMsgCapacity))
+		if (((origin == 0) && (m_MsgCount == s_MsgCapacity))
+			|| ((origin == OriginMask) && (m_HostMsgCount == s_HostMsgCapacity)))
 		{
 			for (auto it = m_Buffer.begin(); it != m_Buffer.end(); it++)
 			{
