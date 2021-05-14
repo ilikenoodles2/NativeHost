@@ -73,9 +73,7 @@ private:
 				if ((it->second & OriginMask) == origin)
 				{
 					m_Buffer.erase(it);
-					m_Buffer.emplace_back(str.str(), origin);
-					m_ShouldScrollToBottom = true;
-					return;
+					break;
 				}
 			}
 		}
